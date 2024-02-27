@@ -4,7 +4,8 @@ const path = require('path');
 const app = express();
 const methodOverride = require('method-override');
 const Listing = require('./models/listing.js');
-const port = 8080;
+const engine = require('ejs-mate');
+let port = 8080;
 
 main().then(()=>console.log("Connected With Database")).catch(err => console.log(err));
 
@@ -12,12 +13,13 @@ async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
 }
 
+app.engine("ejs",engine);
 app.use(methodOverride("_method"));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.set("view engine", "ejs"); // Set up ejs for templating
-app.set( 'views',path.join(__dirname,"views") ); // Point to the folder where our views are located
-
+app.set( 'views',path.join(__dirname,"/views") ); // Point to the folder where our views are located
+app.use(express.static(path.join(__dirname,"/public")));
 app.get("/",(req,res)=>{
   res.send("HI!");
 });

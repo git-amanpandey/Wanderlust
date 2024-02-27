@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show All Lists</title>
-</head>
+<% layout('/layouts/boilerplate.ejs') -%>
+<link rel="stylesheet" href="/css/style.css">
 <body>
     <h2>Details of :<%= list._id %> </h2>
     <ul>
@@ -18,7 +13,6 @@
     <br>
     <a href="/listing/<%= list._id %>/edit">Edit</a>
    <form action="/listing/<%= list._id %>?_method=delete" method="post">
-    <button>Delete</button>
-</form>
+        <button>Delete</button>
+    </form>
 </body>
-</html>
