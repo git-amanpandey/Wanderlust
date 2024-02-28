@@ -1,3 +1,11 @@
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container{
+    flex: 1;
+}
 .navbar{
     height: 4rem;
 } 
@@ -36,5 +44,35 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: space-evenly;
-
 } 
+
+/* card  */
+
+.card{
+    border: none !important;
+    margin-bottom: 2rem;
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.card-body{
+    padding: 0 !important;
+}
+.list-link,.card-title,.card-text{
+    text-decoration: none !important;
+}
+.card-title,.card-text{
+    color: rgb(46, 43, 43) !important;
+}
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.3;
+    background-color: white;
+}
+.img-fluid{
+    height: 36vh;
+}

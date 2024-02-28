@@ -20,6 +20,7 @@ app.use(express.urlencoded({extended:true}));
 app.set("view engine", "ejs"); // Set up ejs for templating
 app.set( 'views',path.join(__dirname,"/views") ); // Point to the folder where our views are located
 app.use(express.static(path.join(__dirname,"/public")));
+
 app.get("/",(req,res)=>{
   res.send("HI!");
 });
@@ -59,6 +60,8 @@ app.get("/listing/:id/edit",async(req,res)=>{
 app.put("/listing/:id",async(req,res)=>{
   let {id} = req.params;
   // console.log(id);
+  // console.log(req.body);
+  // console.log(req.body.list);
    await Listing.findByIdAndUpdate(id,{...req.body.list},{new:true}); 
    res.redirect(`/listing/${id}`);
 });

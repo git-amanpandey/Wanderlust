@@ -1,18 +1,25 @@
 <% layout('/layouts/boilerplate.ejs') -%>
 <link rel="stylesheet" href="/css/style.css">
 <body>
-    <h2>Details of :<%= list._id %> </h2>
-    <ul>
-        <li><%= list.title %></li>
-        <li><%= list.description %></li>
-        <li><%= list.image.url %></li>
-        <li>&#8377 <%= list.price.toLocaleString("en-IN") %></li>
-        <li><%= list.location %></li>
-        <li><%= list.country %></li>
-    </ul>
-    <br>
-    <a href="/listing/<%= list._id %>/edit">Edit</a>
-   <form action="/listing/<%= list._id %>?_method=delete" method="post">
-        <button>Delete</button>
-    </form>
-</body>
+    <div class="row">
+        <div class="col-8 offset-2">
+    <div class="card col-10 offset-1 mt-2">
+        <img src="<%= list.image.url %>" class="img-fluid card-img-top"alt="Listing-Image">
+        <div class="card-body">
+          <h5 class="card-title"><%= list.title %></h5>
+          <p class="card-text"><%= list.description %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Price:</b>&#8377 <%= list.price.toLocaleString("en-IN") %>/night</li>
+          <li class="list-group-item"><b>Location:</b><%= list.location %></li>
+          <li class="list-group-item"><b>Country:</b><%= list.country %></li>
+        </ul>
+        <div class="card-body flex justify-content-center">
+          <a href="/listing/<%= list._id %>/edit" class=" mx-4 btn btn-secondary">Edit</a>
+        <form action="/listing/<%= list._id %>?_method=delete" method="post">
+            <button class="btn btn-danger">Delete</button>
+        </form>
+        </div>
+      </div>
+    </div>
+</div>

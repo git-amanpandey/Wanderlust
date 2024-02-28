@@ -5,12 +5,23 @@
     <!-- <form action="/listing/new" method="get">
         <button>New List</button>
     </form> -->
-    <ul>
-    <% for( let list of lists ) { %>
-        <li>
-           <a href="/listing/<%- list._id %>"><%= list.title %></a> 
-    </li>
-    <% } %>
-</ul>
+    <div class="row row-cols-1 row-cols-md-4 row-cols-sm-2 g-4">
+        <% for( let list of lists ) { %>
+    <a href="/listing/<%= list._id %>" class="list-link">
+        <div class="col">
+          <div class="card">
+            <img src="<%= list.image.url%>" class="card-img-top"style="height:20rem" alt="Listing-Card_Image">
+          <div class="card-img-overlay"></div>
+            <div class="card-body">
+              <h5 class="card-title"><%= list.title %></h5>
+              <p class="card-text"> &#8377 <%= list.price.toLocaleString("en-IN") %>/night</p>
+            </div>
+          </div>
+        </div>
+    </a>
+        <% } %>
+    
+  </div>
+     
 </body>
 
