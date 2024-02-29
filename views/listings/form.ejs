@@ -1,39 +1,56 @@
-<% layout('/layouts/boilerplate.ejs') -%>
 <link rel="stylesheet" href="/css/style.css">
-<body>
+<% layout('/layouts/boilerplate.ejs') -%>
 
 <div class="row mt-2">
  <div class="col-8 offset-2">
     <h2>Create New Listing</h2>
-        <form action="/listing/create" method="post">
+        <form class="needs-validation" action="/listing/create" method="post" novalidate  >
          <div class="mb-3">
             <label for="title" class="form-lable">Title</label><br>
-            <input type="text"class="form-control" name="list[title]"placeholder="Enter Eye-Catching Title">
+            <input type="text"class="form-control" name="list[title]"placeholder="Enter Eye-Catching Title" required>
+            <div class="valid-feedback">
+                Looks good!
+              </div>
          </div>
          <div class="mb-3"> 
             <label for="description"class="form-lable">Description</label>
-            <textarea name="list[description]"class="form-control" placeholder="Describe Properly"></textarea>
+            <textarea name="list[description]"class="form-control" placeholder="Describe Properly" required></textarea>
+            <div class="invalid-feedback">
+               Description is required!
+              </div>
          </div>
        
             <div class="mb-3"> 
                 <label for="image"class="form-lable">Image</label>
-                <input type="text" inputmode="url"class="form-control" name="list[image][url]"placeholder="Url/Link" >
+                <input type="url" inputmode="url"class="form-control" name="list[image][url]"placeholder="Url/Link">
+                <div class="invalid-feedback">
+                    Only url/links accepted for image!
+                   </div>
             </div>
        
             <div class="row">
                 <div class="mb-3 col-md-4">
                     <label for="price"class="form-lable">Price</label>
-                    <input type="number"class="form-control" inputmode="numeric" name="list[price]" placeholder="1200" >
+                    <input type="number"class="form-control" inputmode="numeric" name="list[price]" placeholder="1200" required >
+                    <div class="invalid-feedback">
+                        Price should be valid!
+                       </div>
                 </div>
                 <div class="mb-3 col-md-8">
                     <label for="Country"class="form-lable">Country</label>
-                    <input type="text"class="form-control" name="list[country]"placeholder="India" >
+                    <input type="text"class="form-control" name="list[country]"placeholder="India" required>
+                    <div class="invalid-feedback">
+                        Country name is required!
+                       </div>
                 </div>
             </div>     
                  
                 <div class="mb-3">
                     <label for="location"class="form-lable">Location</label>
-                    <input type="text" class="form-control"name="list[location]"placeholder="location" >
+                    <input type="text" class="form-control"name="list[location]"placeholder="location" required>
+                    <div class="invalid-feedback">
+                        Location is required!
+                       </div>
                </div>
                 <!-- <form action="/listing/create" method="post"> -->
                <div class="d-grid gap-2 d-block col-6 offset-3">
@@ -41,6 +58,5 @@
                </div>  
              <!-- </form> -->
       </form>
-    </div>
-    </div>
-</body>
+ </div>
+</div>

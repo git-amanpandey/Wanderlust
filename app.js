@@ -22,7 +22,8 @@ app.set( 'views',path.join(__dirname,"/views") ); // Point to the folder where o
 app.use(express.static(path.join(__dirname,"/public")));
 
 app.get("/",(req,res)=>{
-  res.send("HI!");
+  // res.send("HI!");
+  res.render("./listings/new.ejs")
 });
 
 // Index Route
