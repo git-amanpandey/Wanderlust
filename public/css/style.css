@@ -3,6 +3,7 @@ body{
     flex-direction: column;
     min-height: 100vh;
 }
+
 .container{
     flex: 1;
 }
@@ -48,7 +49,7 @@ body{
 
 /* card  */
 
-.card{
+.listing-card{
     border: none !important;
     margin-bottom: 2rem;
 }
@@ -74,5 +75,5 @@ body{
     background-color: white;
 }
 .img-fluid{
-    height: 36vh;
+    height: 40vh !important;
 }

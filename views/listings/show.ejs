@@ -1,25 +1,86 @@
 <% layout('/layouts/boilerplate.ejs') -%>
-<link rel="stylesheet" href="/css/style.css">
-<body>
-    <div class="row">
-        <div class="col-8 offset-2">
-    <div class="card col-10 offset-1 mt-2">
-        <img src="<%= list.image.url %>" class="img-fluid card-img-top"alt="Listing-Image">
+  <link rel="stylesheet" href="/css/style.css">
+  <div class="row">
+    <div class="col-8 offset-2">
+      <div class="card col-10 offset-1 mt-2 listing-card">
+        <h5 class="card-title">
+          <%= list.title %>
+        </h5>
+        
+        <img src="<%= list.image.url %>" class="img-fluid card-img-top" alt="Listing-Image">
+    
         <div class="card-body">
-          <h5 class="card-title"><%= list.title %></h5>
-          <p class="card-text"><%= list.description %></p>
+
+          <p class="card-text">
+            <%= list.description %>
+          </p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><b>Price:</b>&#8377 <%= list.price.toLocaleString("en-IN") %>/night</li>
-          <li class="list-group-item"><b>Location:</b><%= list.location %></li>
-          <li class="list-group-item"><b>Country:</b><%= list.country %></li>
+          <li class="list-group-item"><b>Location:</b>
+            <%= list.location %>
+          </li>
+          <li class="list-group-item"><b>Country:</b>
+            <%= list.country %>
+          </li>
         </ul>
         <div class="card-body flex justify-content-center">
           <a href="/listing/<%= list._id %>/edit" class=" mx-4 btn btn-secondary">Edit</a>
-        <form action="/listing/<%= list._id %>?_method=delete" method="post">
+          <form action="/listing/<%= list._id %>?_method=delete" method="post">
             <button class="btn btn-danger">Delete</button>
-        </form>
+          </form>
         </div>
       </div>
     </div>
-</div>
+
+    <!-- reviews html-->
+    <div class="col-6 offset-3">
+      <hr>
+      <h3>Submit a review</h3>
+      <form action="/listing/<%= list._id %>/reviews" method="post" novalidate class="needs-validation">
+        <div class="row mt-1 d-flex justify-content-around">
+          <div class="col-md-6">
+            <label for="comment" class="form-label">Comment</label>
+            <input type="text" name="review[comment]" class="form-control" required></input>
+            <div class="invalid-feedback">Give Comments!</div>
+            <div class="valid-feedback">Thanks for your time!</div>
+          </div>
+          <div class="col-md-4">
+            <label for="rating" class="form-label">Rating</label>
+            <select class="form-select" name="review[rating]" required>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+            <div class="invalid-feedback">Give some Rating!</div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end align-top">
+          <button class="btn btn-danger mt-3 mb-3">Submit</button>
+        </div>
+      </form>
+
+      <hr>
+      <h4 class="">All Reviews</h4>
+      <div class="row">
+        <% for( review of list.reviews ) { %>
+        <div class="card col-5 ms-3 mb-3">
+          <div class="card-body">
+            <h5 class="card-title">😀</h5>
+            <p class="card-text"><%= review.comment %></p>
+            <div class="flex justify-content-between">
+            <p class="cardtext"><%= review.rating %>⭐</p>
+            <form action="/listing/<%= list._id %>/reviews/<%= review._id %>?_method=delete" method="post">
+              <button class="btn btn-sm btn-danger "><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+          </div>
+          
+        </div>
+       
+        <% } %>
+      </div>
+    </div>
+  </div>
