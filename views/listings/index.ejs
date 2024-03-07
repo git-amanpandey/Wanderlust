@@ -5,12 +5,12 @@
     <!-- <form action="/listing/new" method="get">
         <button>New List</button>
     </form> -->
-    <div class="row row-cols-1 row-cols-md-4 row-cols-sm-2 g-4">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
         <% for( let list of lists ) { %>
     <a href="/listing/<%= list._id %>" class="list-link">
         <div class="card col listing-card">
           <!-- <div class="card"> -->
-            <img src="<%= list.image.url%>" class=" img-fluid card-img-top"style="height:20rem" alt="Listing-Card_Image">
+            <img src="<%= list.image.url%>" class=" img-fluid card-img-top" alt="Listing-Card_Image">
           <div class="card-img-overlay"></div>
             <div class="card-body">
               <h5 class="card-title"><%= list.title %></h5>
