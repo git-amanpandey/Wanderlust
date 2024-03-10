@@ -34,6 +34,7 @@ router.get("/",  wrapAsync( async(req,res,next)=>{
       console.log(req.body.list);
     const newList =new Listing(req.body.list);
     await newList.save();
+    req.flash("success","New Listing is Created");
     res.redirect("/listing");
   }));
   // Show Route
@@ -60,9 +61,10 @@ router.get("/",  wrapAsync( async(req,res,next)=>{
     // console.log(req.body);
     // console.log(req.body.list);
     if(!req.body.list){
-      throw new ExpressError(400,"Send valid data for listing");
+      throw new ExpressError(400,"Send valid data for listing !");
     }
      await Listing.findByIdAndUpdate(id,{...req.body.list},{new:true}); 
+     req.flash("success","Listing edited Successfully !");
      res.redirect(`/listing/${id}`);
   }));
   
@@ -70,6 +72,7 @@ router.get("/",  wrapAsync( async(req,res,next)=>{
   router.delete("/:id",wrapAsync(async(req,res)=>{
     let {id} =req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash("success","Listing deleted Successfully !");
     res.redirect("/listing");
   }));
 
