@@ -7,3 +7,14 @@
   </div>
 </div>
   <% } %>
+
+ <!-- Error-flash -->
+  <% if (error && error.length) { %>
+
+    <div class="d-flex justify-content-end align-self-center">
+    <div class="alert alert-danger alert-dismissible fade show col-4 mt-2" role="alert">
+      <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+    <% } %>

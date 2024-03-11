@@ -31,7 +31,7 @@ router.get("/",  wrapAsync( async(req,res,next)=>{
   
   
   router.post("/create",validateSchema,wrapAsync(async(req,res)=>{
-      console.log(req.body.list);
+    console.log(req.body.list);
     const newList =new Listing(req.body.list);
     await newList.save();
     req.flash("success","New Listing is Created");
@@ -42,8 +42,13 @@ router.get("/",  wrapAsync( async(req,res,next)=>{
   router.get("/:id", wrapAsync(async(req,res)=>{
     let {id} = req.params;
     const list= await Listing.findById(id).populate("reviews");
+    if(!list){
+      req.flash("error","Sorry ! Listing you wanted to access doesn't exists !");
+      res.redirect("/listing");
+    }else{
     // res.send("ok....!");
     res.render("./listings/show.ejs",{list});
+    }
   }));
   
   // Update Route
@@ -51,7 +56,12 @@ router.get("/",  wrapAsync( async(req,res,next)=>{
   router.get("/:id/edit",wrapAsync(async(req,res)=>{
     let {id} = req.params;
    const list= await Listing.findById(id);
+   if(!list){
+    req.flash("error","Sorry ! Listing you wanted to Edit doesn't exists !");
+    res.redirect("/listing");
+  }else{
     res.render("./listings/edit.ejs",{list});
+  }
   }));
   
   
@@ -60,9 +70,6 @@ router.get("/",  wrapAsync( async(req,res,next)=>{
     // console.log(id);
     // console.log(req.body);
     // console.log(req.body.list);
-    if(!req.body.list){
-      throw new ExpressError(400,"Send valid data for listing !");
-    }
      await Listing.findByIdAndUpdate(id,{...req.body.list},{new:true}); 
      req.flash("success","Listing edited Successfully !");
      res.redirect(`/listing/${id}`);

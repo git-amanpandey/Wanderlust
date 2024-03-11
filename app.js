@@ -5,11 +5,15 @@ const app = express();
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError.js');
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
+const userRouter = require('./routes/user.js');
 const session = require('express-session');
 const flash = require('connect-flash');
-let port = 8080;
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.js');
+
 
 main().then(()=>console.log("Connected With Database")).catch(err => console.log(err));
 
@@ -36,27 +40,34 @@ app.use(session({
     httpOnly: true,
   }
 }));
-
 // USing connect-flash for displaying msg:
 app.use(flash());
 
+//Passport-Local-Use
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
-  // console.log(res.locals.success);
+  res.locals.error=req.flash("error");
   next();
 });
 
 //Normal Route
 app.get("/",(req,res)=>{
-  // res.send("HI!");
-  res.send("Root Path------!");
+  res.send("This is root !");
 });
 
+//All user route
+app.use("/",userRouter);
 //All Listing Routes
-app.use("/listing",listings);
+app.use("/listing",listingRouter);
 
 //All Review Routes
-app.use("/listing/:id/reviews",reviews);
+app.use("/listing/:id/reviews",reviewRouter);
 
 //Middleware last
 app.all("*",(req,res,next)=>{
@@ -70,4 +81,5 @@ app.use((err,req,res,next)=>{
 });
 
 //Server Started
+const port = 8080;
 app.listen(port, () => console.log(`Server is running on ${port}`));
