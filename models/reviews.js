@@ -12,5 +12,9 @@ var reviewSchema = new Schema({
         type:Date,
         default:Date.now()
     },
+    owner:{
+        type:mongoose.ObjectId,
+        ref:"User",
+    }
 });
 module.exports = mongoose.model("Review",reviewSchema);

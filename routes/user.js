@@ -1,56 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user.js");
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require('passport');
+const ExpressError = require('../utils/ExpressError');
+const userController = require('../controllers/user');
 
 //signup-route
-router.get("/signup", (req, res) => {
-  res.render("./users/signup.ejs");
-});
-router.post(
-  "/signup",
-  wrapAsync(async (req, res) => {
-    try {
-      let { username, email, password } = req.body;
-      let newUser = new User({ username, email });
-      let xyz = await User.register(newUser, password);
-      req.flash("success", "Registration successful ! Welcome to Wanderlust");
-      res.redirect("/listing");
-      console.log(xyz);
-    } catch (error) {
-      req.flash("error", error.message);
-      res.redirect("/signup");
-    }
-  })
-);
+router.route("/signup")
+.get( userController.signupForm)
+.post(wrapAsync(userController.signup));
 
 //login-route
-router.get("/login", (req, res) => {
-  res.render("./users/login.ejs");
-});
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    failureFlash: true,
-  }),
-  wrapAsync(async (req, res) => {
-    req.flash("success",`Welcome back ${req.body.username.toString().toUpperCase()} ! You logged in successfully`);
-    res.redirect("/listing");
-    
-  })
-);
+router.route("/login")
+.get(userController.loginForm)
+.post(passport.authenticate("local", {failureRedirect: "/login",failureFlash: true,}),wrapAsync(userController.login));
 
-router.get("/logout",(req,res,next)=>{
-  req.logout((err)=>{
-    if(err){
-      next(err);
-    }else{
-      req.flash("success","You are logged-out Successfully")
-      res.redirect("/listing");
-    }
-  })
-})
+router.get("/logout",userController.logout);
 
 module.exports = router;

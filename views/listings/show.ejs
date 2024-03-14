@@ -8,9 +8,10 @@
         </h5>
         
         <img src="<%= list.image.url %>" class="img-fluid card-img-top" alt="Listing-Image">
-    
+        <p class="card-text mt-2 mb-1">
+          <b>Owned By:</b> <%= list.owner.username %>
+         </p>
         <div class="card-body">
-
           <p class="card-text">
             <%= list.description %>
           </p>
@@ -24,12 +25,14 @@
             <%= list.country %>
           </li>
         </ul>
-        <div class="card-body d-flex justify-content-center">
-          <a href="/listing/<%= list._id %>/edit" class=" mx-4 btn btn-secondary">Edit</a>
-          <form action="/listing/<%= list._id %>?_method=delete" method="post">
-            <button class="btn btn-danger">Delete</button>
-          </form>
-        </div>
+        <% if (user && user._id.equals(list.owner._id)) { %>
+          <div class="card-body d-flex justify-content-center">
+            <a href="/listing/<%= list._id %>/edit" class=" mx-4 btn btn-secondary">Edit</a>
+            <form action="/listing/<%= list._id %>?_method=delete" method="post">
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        <% } %>
       </div>
     </div>
 
@@ -69,7 +72,7 @@
         <% for( review of list.reviews ) { %>
         <div class="card col-5 ms-3 mb-3">
           <div class="card-body">
-            <h5 class="card-title">😀</h5>
+            <h6 class="card-title"><i>Owned By:- </i><%= review.owner.username %></h6>
             <p class="card-text"><%= review.comment %></p>
             <div class="flex justify-content-between">
             <p class="cardtext"><%= review.rating %>⭐</p>
