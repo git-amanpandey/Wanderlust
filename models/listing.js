@@ -11,7 +11,7 @@ const listingSchema = new Schema({
   description: String,
   image: {
     // type:Object,
-    pathname:{type:String},
+    filename:{type:String},
     url:{
       type:String,
       default:"https://images.unsplash.com/photo-1533167649158-6d508895b680?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c3BsYXNofGVufDB8fDB8fHww" ,
@@ -36,6 +36,7 @@ owner:{
 });
 
 listingSchema.post("findOneAndDelete",wrapAsync(async(list)=>{
+  console.log(list);
   if(list){
   let x = await Review.deleteMany({_id: {$in: list.reviews}});
    console.log(x);

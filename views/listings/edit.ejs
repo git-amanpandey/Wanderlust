@@ -1,60 +1,63 @@
 <% layout('/layouts/boilerplate.ejs') -%>
-<link rel="stylesheet" href="/css/style.css">
-   
-<div class="row">
- <div class="col-8 offset-2 mt-3">
-     <h2>Edit Your Listing</h2>
- <form class="needs-validation" action="/listing/<%=list._id %>?_method=put" method="post" novalidate>
-            <div class="mb-3">
-                <label for="title" class="form-lable">Title</label>
-                <input type="text"class="form-control" name="list[title]"value="<%=list.title%>" required>
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
-            </div>
-            <div class="mb-3">
-                 <label for="description"class="form-lable">Description</label>
-                <input type="text" name="list[description]"class="form-control" value="<%= list.description %>" required></input>
-                <div class="invalid-feedback">
-                    Description is required!
-                   </div>
-        </div>
-           
-           <div class="mb-3">
-             <label for="image"class="form-lable">Image</label>
-            <input type="url" inputmode="url" class="form-control" name="list[image][url]"value="<%=list.image.url %>" required >
-            <div class="invalid-feedback">
-                Image-url is required!
-               </div>
-    </div>
-           
+    <link rel="stylesheet" href="/css/style.css">
+
+    <div class="row">
+        <div class="col-8 offset-2 mt-3">
+            <h2>Edit Your Listing Here</h2>
+            <form class="needs-validation" action="/listing/<%=list._id %>?_method=put" method="post" novalidate
+                enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-lable">Title</label>
+                    <input type="text" class="form-control" name="list[title]" value="<%=list.title%>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-lable">Description</label>
+                    <input type="text" name="list[description]" class="form-control" value="<%= list.description %>"
+                        required></input>
+                    <div class="invalid-feedback">
+                        Description is required!
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    Previous Uploaded Image: <br>
+                   <img src="<%= newImageUrl %>" alt="Not Uploaded || Internal server issue" >
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-lable">Upload New Image</label>
+                    <input type="file" class="form-control" name="list[image][url]">
+                </div>
+
                 <div class="row">
-                    <div class="mb-3 col-md-4"><label for="price"class="form-lable">Price</label>
-                        <input type="number"class="form-control" inputmode="numeric" name="list[price]" value="<%=list.price %>" required>
+                    <div class="mb-3 col-md-4"><label for="price" class="form-lable">Price</label>
+                        <input type="number" class="form-control" inputmode="numeric" name="list[price]"
+                            value="<%=list.price %>" required>
                         <div class="invalid-feedback">
                             Price should be valid!
-                           </div>
-            </div>
-                    <div class="mb-3 col-md-8"> <label for="location"class="form-lable">Location</label>
-                        <input type="text" class="form-control"name="list[location]"value="<%=list.location%>" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-md-8">
+                        <label for="Country" class="form-lable">Country</label>
+                        <input type="text" class="form-control" name="list[country]" value="<%=list.country%>" required>
                         <div class="invalid-feedback">
-                            Location name is required!
-                           </div>
-            </div>
-                         
-                </div>  
-                <div class="mb-3">
-                    <label for="Country"class="form-lable">Country</label>
-                    <input type="text"class="form-control" name="list[country]"value="<%=list.country%>" required>
+                            Country name is required!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 "> <label for="location" class="form-lable">Location</label>
+                    <input type="text" class="form-control" name="list[location]" value="<%=list.location%>" required>
                     <div class="invalid-feedback">
-                        Country name is required!
-                       </div>
-                   </div>
-                <!-- <form action="/listing/<%= list._id %>?_method=put" method="post"> -->
-                   <div class="d-grid gap-2 d-block col-6 offset-3">
-                    <input type="submit" value="Submit"class="btn btn-success">
-                   </div>  
-                <!-- </form> -->
-          </form>
- </div>
+                        Location name is required!
+                    </div>
+                </div>
+
+            <div class="d-grid gap-2 d-block col-6 offset-3 mb-3">
+                 <input type="submit" value="Submit" class="btn btn-success">
+            </div>
+        </form>
+    </div>
 </div>

@@ -1,4 +1,5 @@
 const Listing = require("../models/listing.js");
+const {cloudinary} = require('../cloudStorage');
 
 module.exports.index = async (req, res, next) => {
   const lists = await Listing.find({});
@@ -10,12 +11,15 @@ module.exports.newForm = (req, res) => {
 };
 
 module.exports.createList = async (req, res) => {
-  console.log(req.body.list);
   const newList = new Listing(req.body.list);
-  newList.owner = req.user._id;
-  await newList.save();
-  req.flash("success", "New Listing is Created");
-  res.redirect("/listing");
+    let url = req.file.path;
+    let filename = req.file.filename;
+    newList.image = {url , filename};
+    newList.owner = req.user._id;
+
+    await newList.save();
+    req.flash("success", "New Listing is Created");
+    res.redirect("/listing");
 };
 
 module.exports.showList = async (req, res) => {
@@ -45,22 +49,39 @@ module.exports.editListForm = async (req, res) => {
     req.flash("error", "Sorry ! Listing you wanted to Edit doesn't exists !");
     res.redirect("/listing");
   } else {
+    let originalListUrl = list.image.url;
+    newImageUrl= originalListUrl.replace("/upload","/upload/q_30,w_300,h_150,c_fill"); 
     res.render("./listings/edit.ejs", { list });
   }
 };
 
 module.exports.editList = async (req, res) => {
   let { id } = req.params;
-  // console.log(id);
-  // console.log(req.body);
-  // console.log(req.body.list);
-  await Listing.findByIdAndUpdate(id, { ...req.body.list }, { new: true });
+  let newList = await Listing.findByIdAndUpdate(id, { ...req.body.list }, { new: true });
+  if(typeof req.file !== 'undefined'){
+   let url = req.file.path;
+    let filename = req.file.filename;
+    newList.image = {url , filename};
+    await newList.save();
+  }
   req.flash("success", "Listing edited Successfully !");
   res.redirect(`/listing/${id}`);
 };
 
 module.exports.deleteList = async (req, res) => {
   let { id } = req.params;
+
+  let list = await Listing.findById(id);
+  // console.log(list);
+  const publicIdToDelete = list.image.filename;
+  cloudinary.uploader.destroy(publicIdToDelete)
+    .then(result => {
+        console.log("Image deletion result:", result);
+    })
+    .catch(error => {
+        console.error("Error deleting image:", error);
+    });
+
   await Listing.findByIdAndDelete(id);
   req.flash("success", "Listing deleted Successfully !");
   res.redirect("/listing");

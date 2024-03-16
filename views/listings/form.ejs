@@ -9,6 +9,7 @@
       action="/listing/create"
       method="post"
       novalidate
+      enctype="multipart/form-data"
     >
       <div class="mb-3">
         <label for="title" class="form-lable">Title</label><br />
@@ -33,15 +34,14 @@
       </div>
 
       <div class="mb-3">
-        <label for="image" class="form-lable">Image</label>
+        <label for="image" class="form-lable"> Upload Listing-Image</label>
         <input
-          type="url"
-          inputmode="url"
+          type="file"
           class="form-control"
           name="list[image][url]"
-          placeholder="Url/Link"
+          required
         />
-        <div class="invalid-feedback">Only url/links accepted for image!</div>
+        <!-- <div class="invalid-feedback"></div> -->
       </div>
 
       <div class="row">

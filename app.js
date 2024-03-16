@@ -1,3 +1,6 @@
+if(process.env.NODE_ENV != "production"){
+  require('dotenv').config();
+};
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -24,7 +27,7 @@ async function main() {
 app.engine("ejs",engine); 
 app.use(methodOverride("_method"));
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs"); // Set up ejs for templating
 app.set( 'views',path.join(__dirname,"/views") ); // Point to the folder where our views are located
 app.use(express.static(path.join(__dirname,"/public")));
