@@ -24,13 +24,21 @@ module.exports.validateReview = (req, res, next) => {
   }
 };
 
-module.exports.isValid = async (req, res, next) => {
+module.exports.isValid = (req, res, next) => {
   if (!req.isAuthenticated()) {
+    req.session.redirectUrl = req.originalUrl;
     req.flash("error", "You are not Logged-in ! Please login ");
     res.redirect("/login");
-  } else {
+  } else{   
     next();
   }
+};
+
+module.exports.saveRedirectUrl = (req,res,next)=>{
+  if(req.session.redirectUrl){
+    res.locals.redirectUrl = req.session.redirectUrl;
+  }
+  next();
 };
 
 module.exports.isOwner = async (req, res, next) => {

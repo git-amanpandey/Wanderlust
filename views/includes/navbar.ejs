@@ -1,36 +1,40 @@
 <nav class="navbar navbar-expand-sm navbar-light border-bottom bg-white sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/"><i class="fa-solid fa-compass"></i></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" href="/">Home</a>
-          <a class="nav-link" href="/listing">All Listing</a>
-          <a class="nav-link" href="/listing/new">Add new Listing</a>
-        </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"><i class="fa-solid fa-compass"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/listing">All Listing</a>
+        <a class="nav-link" href="/listing/new">Add new Listing</a>
       </div>
+
       <!-- dropdown -->
-      <div class="btn-group mx-5">
-        <button type="button" class="btn btn-danger rounded-pill dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+      <div class="btn-group position-absolute top-20 end-0 translate-middle-x">
+        <button type="button" class="btn btn-danger rounded-pill dropdown-toggle" data-bs-toggle="dropdown"
+          data-bs-display="static" aria-expanded="false">
           <i class="fa-solid fa-user me-3"></i>
         </button>
-       
+
         <% if (user) { %>
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end mt-3">
-          <li><a class="dropdown-item" href="/logout">Log out</a></li>
-          
-        </ul>
-        <% } %>
-          
-        <% if (!user) { %>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end mt-3">
-            <li><a class="dropdown-item" href="/login">Log in</a></li>
-            <li><a class="dropdown-item" href="/signup">Sign up</a></li>
+            <li><a class="dropdown-item" href="/logout">Log out</a></li>
           </ul>
-        <% } %>
+          <% } %>
+
+            <% if (!user) { %>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end mt-3">
+                <li><a class="dropdown-item" href="/login">Log in</a></li>
+                <li><a class="dropdown-item" href="/signup">Sign up</a></li>
+              </ul>
+              <% } %>
       </div>
 
     </div>
-  </nav> 
+
+
+  </div>
+</nav>

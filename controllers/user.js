@@ -21,7 +21,8 @@ module.exports.signup = async (req, res) => {
           .toString()
           .toUpperCase()}🎉! You are Welcome to Wanderlust !`
       );
-      return res.redirect("/listing");
+     let redirectUrl = res.locals.redirectUrl || "/listing" ;
+     return res.redirect(redirectUrl);
     });
   } catch (error) {
     req.flash("error", error.message);
@@ -40,7 +41,8 @@ module.exports.login = async (req, res) => {
       .toString()
       .toUpperCase()} ! You logged in successfully`
   );
-  res.redirect("/listing");
+  let redirectUrl = res.locals.redirectUrl || "/listing" ;
+  res.redirect(redirectUrl);
 };
 
 module.exports.logout = (req, res, next) => {

@@ -35,8 +35,8 @@ owner:{
 }
 });
 
-listingSchema.post("findOneAndDelete",wrapAsync(async(list)=>{
-  console.log(list);
+listingSchema.post('findOneAndDelete',(async(list)=>{
+  // console.log(list);
   if(list){
   let x = await Review.deleteMany({_id: {$in: list.reviews}});
    console.log(x);

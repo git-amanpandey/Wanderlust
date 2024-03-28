@@ -50,7 +50,7 @@ module.exports.editListForm = async (req, res) => {
     res.redirect("/listing");
   } else {
     let originalListUrl = list.image.url;
-    newImageUrl= originalListUrl.replace("/upload","/upload/q_30,w_300,h_150,c_fill"); 
+    newImageUrl= originalListUrl.replace("/upload","/upload/q_25,w_300,h_150,c_fill"); 
     res.render("./listings/edit.ejs", { list });
   }
 };

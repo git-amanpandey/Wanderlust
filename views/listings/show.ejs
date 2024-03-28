@@ -10,7 +10,7 @@
         
         <img src="<%= list.image.url %>" class="img-fluid card-img-top" alt="Listing-Image">
         <p class="card-text mt-2 mb-1">
-          <b>Owned By:</b> <%= list.owner.username %>
+          <b>Owned By:</b> <%= list.owner.username.charAt(0).toUpperCase()+ list.owner.username.slice(1).toLowerCase() %>
          </p>
         <div class="card-body">
           <p class="card-text">
@@ -36,11 +36,11 @@
         <% } %>
       </div>
     </div>
-
-
+    
     <!-- reviews html-->
     <div class="col-6 offset-3">
-      <hr>
+      <% if (user) { %>
+        <hr>
       <h3>Submit a review</h3>
       <form action="/listing/<%= list._id %>/reviews" method="post" novalidate class="needs-validation">
         <div class="row mt-1 d-flex justify-content-around">
@@ -52,8 +52,8 @@
           </div>
           <div class="col-md-4">
             <label for="rating" class="form-label">Rating</label>
-            <fieldset class="starability-slot">
-              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+            <fieldset class="starability-slot" required>
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating."/>
               <input type="radio" id="first-rate1" name="review[rating]" value="1" />
               <label for="first-rate1" title="Terrible">1 star</label>
               <input type="radio" id="first-rate2" name="review[rating]" value="2" />
@@ -73,14 +73,15 @@
           <button class="btn btn-danger mb-3">Submit</button>
         </div>
       </form>
-
+      <% } %>
       <hr>
+
       <h4 class="">All Reviews</h4>
       <div class="row">
         <% for( review of list.reviews ) { %>
         <div class="card col-5 ms-3 mb-3">
           <div class="card-body">
-            <h6 class="card-title"><i class="fa-regular fa-user"></i><%= review.owner.username %></h6>
+            <h6 class="card-title"><i class="fa-regular fa-user"></i> <%= review.owner.username.charAt(0).toUpperCase() + review.owner.username.toUpperCase() %></h6>
             <p class="starability-result cardtext" data-rating="<%= review.rating %>"><%= review.rating %></p>
             <p class="card-text"><%= review.comment %></p>
             <form action="/listing/<%= list._id %>/reviews/<%= review._id %>?_method=delete" method="post"class="d-flex justify-content-end">
