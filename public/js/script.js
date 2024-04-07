@@ -17,3 +17,10 @@
       }, false)
     })
   })();
+
+  // Select the toast element
+  var toastElement = document.querySelector('.toast');
+  // Initialize the toast
+  var toast = new bootstrap.Toast(toastElement,{animation:true});
+  // Show the toast
+  toast.show();

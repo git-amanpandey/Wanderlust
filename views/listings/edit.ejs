@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-8 offset-2 mt-3">
             <h2>Edit Your Listing Here</h2>
-            <form class="needs-validation" action="/listing/<%=list._id %>?_method=put" method="post" novalidate
+            <form id="formSubmit" class="needs-validation" action="/listing/<%=list._id %>?_method=put" method="post" novalidate
                 enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-lable">Title</label>
@@ -24,7 +24,7 @@
 
                 <div class="mb-3">
                     Previous Uploaded Image: <br>
-                   <img src="<%= newImageUrl %>" alt="Not Uploaded || Internal server issue" >
+                    <img src="<%= newImageUrl %>" style="max-height: 25vh;" alt="Not Uploaded || Internal server issue">
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-lable">Upload New Image</label>
@@ -39,7 +39,23 @@
                             Price should be valid!
                         </div>
                     </div>
-                    <div class="mb-3 col-md-8">
+                    <div class="form-group col-md-4">
+                        <label for="inputState">Category</label>
+                        <select id="inputState" class="form-control" name="list[category]" value="<%=list.category%>"
+                            required>
+                            <option>Trending</option>
+                            <option>Room</option>
+                            <option>Castle</option>
+                            <option>Mountain-city</option>
+                            <option>Amazing-pools</option>
+                            <option>Farms</option>
+                            <option>Camping</option>
+                            <option>Arctic</option>
+                        </select>
+                        <div class="invalid-feedback">Select Category !</div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
                         <label for="Country" class="form-lable">Country</label>
                         <input type="text" class="form-control" name="list[country]" value="<%=list.country%>" required>
                         <div class="invalid-feedback">
@@ -49,15 +65,36 @@
                 </div>
 
                 <div class="mb-3 "> <label for="location" class="form-lable">Location</label>
-                    <input type="text" class="form-control" name="list[location]" value="<%=list.location%>" required>
+                    <input type="text" id="lClick" class="form-control" name="list[location]" value="<%=list.location%>" required>
                     <div class="invalid-feedback">
                         Location name is required!
                     </div>
                 </div>
 
-            <div class="d-grid gap-2 d-block col-6 offset-3 mb-3">
-                 <input type="submit" value="Submit" class="btn btn-success">
-            </div>
-        </form>
+                <div class="d-grid gap-2 d-block col-6 offset-3 mb-3">
+                    <input id="btSubmit" type="submit" value="Submit" class="btn btn-success">
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+    <script>
+        document.getElementById('formSubmit').addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent default form submission
+      
+      let bt = document.getElementById('btSubmit');    
+      // Check if the form is valid according to Bootstrap's validation
+      if (event.target.checkValidity()) {
+        bt.setAttribute('value', 'Loading...');
+        bt.disabled = true;
+        // Example: Simulate form submission delay
+        setTimeout(() => {
+          // After some time, submit the form
+          event.target.submit();
+        }, 500); // Adjust the delay time as needed
+      } else {
+        // If the form is invalid, Bootstrap will handle displaying error messages.
+        // You can add custom logic here if needed.
+        console.log('Form is invalid');
+      }
+    });
+    </script>

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 const wrapAsync = require('../utils/wrapAsync');
 const ExpressError = require('../utils/ExpressError.js');
 const {isValid ,isOwner,validateSchema} = require('../middleware.js');
@@ -14,7 +14,6 @@ router.get("/",  wrapAsync(listingController.index));
 //New-Form--->Create-List
 router.get("/new",isValid,listingController.newForm);
 router.post("/create",isValid,upload.single('list[image][url]'),validateSchema,wrapAsync(listingController.createList));
-
 //Show-List---->Edit-List----->Delete-List
 router.route("/:id")
 .get(wrapAsync(listingController.showList))

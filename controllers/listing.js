@@ -1,8 +1,13 @@
 const Listing = require("../models/listing.js");
 const {cloudinary} = require('../cloudStorage');
+//Map-Box import
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const token = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: token });
+
 
 module.exports.index = async (req, res, next) => {
-  const lists = await Listing.find({});
+  const lists = await Listing.find({}).populate("reviews");
   res.render("./listings/index.ejs", { lists });
 };
 
@@ -11,13 +16,20 @@ module.exports.newForm = (req, res) => {
 };
 
 module.exports.createList = async (req, res) => {
+  let mapCoordinate = await geocodingClient.forwardGeocode({
+    query: req.body.list.location,
+    limit: 1
+  })
+    .send()
+
   const newList = new Listing(req.body.list);
     let url = req.file.path;
     let filename = req.file.filename;
     newList.image = {url , filename};
     newList.owner = req.user._id;
-
-    await newList.save();
+    newList.geometry =  mapCoordinate.body.features[0].geometry;
+    let xyz= await newList.save();
+    console.log("New Listing is created");
     req.flash("success", "New Listing is Created");
     res.redirect("/listing");
 };

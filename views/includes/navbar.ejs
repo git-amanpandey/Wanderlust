@@ -1,40 +1,67 @@
-<nav class="navbar navbar-expand-sm navbar-light border-bottom bg-white sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-solid fa-compass"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+<nav
+  class="navbar navbar-expand-sm navbar-light border-bottom bg-white sticky-top"
+>
+  <div class="container-fluid ms-3">
+    <a class="navbar-brand" href="/listing"><i class="fa-solid fa-compass"></i></a>
+    <a class="navbar-brand border border-0 rounded shadow p-1" href="/listing">Explore</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/listing">All Listing</a>
-        <a class="nav-link" href="/listing/new">Add new Listing</a>
+      
+      <div class="navbar-nav mx-auto">
+        <form class="form-inline needs-validation d-flex"novalidate method="get" action="/search/find">
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            name="search"
+            placeholder="Search Location"
+            aria-label="Search"
+            required
+          />
+          <button class="btn btn-outline-secondary shadow rounded m-2 my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
       </div>
-
       <!-- dropdown -->
-      <div class="btn-group position-absolute top-20 end-0 translate-middle-x">
-        <button type="button" class="btn btn-danger rounded-pill dropdown-toggle" data-bs-toggle="dropdown"
-          data-bs-display="static" aria-expanded="false">
+      <div class=" navbar-nav d-flex align-items-center justify-content-between">
+        <a class="nav-link" href="/listing/new"
+          >Create Your Listing</a
+        >
+        <% if (user) { %>
+        <button class="btn btn-outline-danger text-light m-2 my-2 my-sm-0 shadow rounded">
+          <a class="logout text-dark p-0" href="/logout">Log out</a>
+        </button>
+        <% } %> 
+        <% if (!user) { %>
+        <button
+          type="button"
+          class="btn btn-danger rounded-pill dropdown-toggle"
+          data-bs-toggle="dropdown"
+          data-bs-display="static"
+          aria-expanded="false"
+        >
           <i class="fa-solid fa-user me-3"></i>
         </button>
-
-        <% if (user) { %>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end mt-3">
-            <li><a class="dropdown-item" href="/logout">Log out</a></li>
-          </ul>
-          <% } %>
-
-            <% if (!user) { %>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end mt-3">
-                <li><a class="dropdown-item" href="/login">Log in</a></li>
-                <li><a class="dropdown-item" href="/signup">Sign up</a></li>
-              </ul>
-              <% } %>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end mt-3">
+          <li>
+            <a class="dropdown-item " href="/login">Log in</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="/signup">Sign up</a>
+          </li>
+        </ul>
+        <% } %>
       </div>
-
     </div>
-
-
   </div>
 </nav>

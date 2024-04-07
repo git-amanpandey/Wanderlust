@@ -27,7 +27,7 @@ module.exports.validateReview = (req, res, next) => {
 module.exports.isValid = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl;
-    req.flash("error", "You are not Logged-in ! Please login ");
+    req.flash("error", "You can't access without login ! Please login");
     res.redirect("/login");
   } else{   
     next();

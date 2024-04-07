@@ -1,17 +1,24 @@
 <% layout('/layouts/boilerplate.ejs') -%>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/starRating.css">
+
+  <script>
+    const mapToken = '<%= process.env.MAP_TOKEN %>';
+    const myCoordinate = '<%- JSON.stringify(list.geometry.coordinates) %>';
+  </script>
+
   <div class="row">
     <div class="col-8 offset-2">
       <div class="card col-10 offset-1 mt-2 listing-card">
         <h5 class="card-title">
           <%= list.title %>
         </h5>
-        
+
         <img src="<%= list.image.url %>" class="img-fluid card-img-top" alt="Listing-Image">
         <p class="card-text mt-2 mb-1">
-          <b>Owned By:</b> <%= list.owner.username.charAt(0).toUpperCase()+ list.owner.username.slice(1).toLowerCase() %>
-         </p>
+          <b>Owned By:</b>
+          <%= list.owner.username.charAt(0).toUpperCase()+ list.owner.username.slice(1).toLowerCase() %>
+        </p>
         <div class="card-body">
           <p class="card-text">
             <%= list.description %>
@@ -25,6 +32,9 @@
           <li class="list-group-item"><b>Country:</b>
             <%= list.country %>
           </li>
+          <li class="list-group-item"><b>Category:</b>
+            <%= list.category %>
+          </li>
         </ul>
         <% if (user && user._id.equals(list.owner._id)) { %>
           <div class="card-body d-flex justify-content-center">
@@ -33,63 +43,99 @@
               <button class="btn btn-danger">Delete</button>
             </form>
           </div>
-        <% } %>
+          <% } %>
       </div>
     </div>
-    
+
     <!-- reviews html-->
     <div class="col-6 offset-3">
       <% if (user) { %>
         <hr>
-      <h3>Submit a review</h3>
-      <form action="/listing/<%= list._id %>/reviews" method="post" novalidate class="needs-validation">
-        <div class="row mt-1 d-flex justify-content-around">
-          <div class="col-md-6">
-            <label for="comment" class="form-label">Comment</label>
-            <input type="text" name="review[comment]" class="form-control" required></input>
-            <div class="invalid-feedback">Give Comments!</div>
-            <div class="valid-feedback">Thanks for your time!</div>
+        <h3>Submit a review</h3>
+        <form action="/listing/<%= list._id %>/reviews" method="post" novalidate class="needs-validation">
+          <div class="row mt-1 d-flex justify-content-around">
+            <div class="col-md-6">
+              <label for="comment" class="form-label">Comment</label>
+              <input type="text" name="review[comment]" class="form-control" required></input>
+              <div class="invalid-feedback">Give Comments!</div>
+              <div class="valid-feedback">Thanks for your time!</div>
+            </div>
+            <div class="col-md-4">
+              <label for="rating" class="form-label">Rating</label>
+              <fieldset class="starability-slot" required>
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
+                  aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+              </fieldset>
+              <div class="invalid-feedback">Give some Rating!</div>
+            </div>
           </div>
-          <div class="col-md-4">
-            <label for="rating" class="form-label">Rating</label>
-            <fieldset class="starability-slot" required>
-              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating."/>
-              <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-              <label for="first-rate1" title="Terrible">1 star</label>
-              <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-              <label for="first-rate2" title="Not good">2 stars</label>
-              <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-              <label for="first-rate3" title="Average">3 stars</label>
-              <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-              <label for="first-rate4" title="Very good">4 stars</label>
-              <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-              <label for="first-rate5" title="Amazing">5 stars</label>
-            </fieldset>
-            <div class="invalid-feedback">Give some Rating!</div>
-          </div>
-        </div>
 
-        <div class="d-flex justify-content-end align-top">
-          <button class="btn btn-danger mb-3">Submit</button>
-        </div>
-      </form>
-      <% } %>
-      <hr>
-
-      <h4 class="">All Reviews</h4>
-      <div class="row">
-        <% for( review of list.reviews ) { %>
-        <div class="card col-5 ms-3 mb-3">
-          <div class="card-body">
-            <h6 class="card-title"><i class="fa-regular fa-user"></i> <%= review.owner.username.charAt(0).toUpperCase() + review.owner.username.toUpperCase() %></h6>
-            <p class="starability-result cardtext" data-rating="<%= review.rating %>"><%= review.rating %></p>
-            <p class="card-text"><%= review.comment %></p>
-            <form action="/listing/<%= list._id %>/reviews/<%= review._id %>?_method=delete" method="post"class="d-flex justify-content-end">
-              <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
-            </form>
+          <div class="d-flex justify-content-end align-top">
+            <button class="btn btn-success mb-3">Submit</button>
           </div>
-        </div>
+        </form>
         <% } %>
+
+          <% if (list.reviews.length> 0) { %>
+            <hr>
+            <h4 class="h4">All Reviews</h4>
+            <div class="row">
+              <% for( review of list.reviews ) { %>
+                <div class="card col-5 ms-3 mb-3 shadow-sm rounded ht">
+                  <div class="card-body">
+                    <h6 class="card-title"><i class="fa-regular fa-user"></i>
+                      <%= review.owner.username.charAt(0).toUpperCase() + review.owner.username.toUpperCase() %>
+                    </h6>
+                    <p class="starability-result cardtext" data-rating="<%= review.rating %>">
+                      <%= review.rating %>
+                    </p>
+                    <p class="card-text">
+                      Comment: <%= review.comment %>
+                    </p>
+                    <% if (user && user._id.equals(review.owner._id)) { %>
+                      <form action="/listing/<%= list._id %>/reviews/<%= review._id %>?_method=delete" method="post"
+                        class="d-flex justify-content-end">
+                        <button class="btn btn-sm btn-outline-danger mb-2"><i class="fa-solid fa-trash"></i></button>
+                      </form>
+                      <% } %>
+
+                  </div>
+                </div>
+                <% } %>
+            </div>
+            <hr>
+            <% } %>
+    </div>
+
+    <!-- Map-Coordinates -->
+    <div class="d-flex flex-wrap flex-column justify-content-around align-items-center mb-2">
+      <h3 class="h4 fs-0.1 fw-lightfont-italic me-auto p-2 shadow-lg">Where you'll be</h3>
+      <div>
+        <div id="map"></div>
+        <div id="menu">
+          <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
+          <label for="satellite-streets-v12">satellite streets</label>
+          <input id="light-v11" type="radio" name="rtoggle" value="light">
+          <label for="light-v11">light</label>
+          <input id="dark-v11" type="radio" name="rtoggle" value="dark">
+          <label for="dark-v11">dark</label>
+          <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
+          <label for="streets-v12">streets</label>
+          <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors">
+          <label for="outdoors-v12">outdoors</label>
+        </div>
       </div>
     </div>
+
   </div>
+  <script src="/js/map.js"></script>

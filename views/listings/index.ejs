@@ -1,25 +1,103 @@
 <% layout('/layouts/boilerplate.ejs') -%>
-<link rel="stylesheet" href="/css/style.css">
-<body>
-    <h2>All Lists</h2>
-    <!-- <form action="/listing/new" method="get">
-        <button>New List</button>
-    </form> -->
-    <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
-        <% for( let list of lists ) { %>
-    <a href="/listing/<%= list._id %>" class="list-link">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/starRating.css">
+
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <div class="d-flex flex-wrap mt-3">
+      <a href="/search/Trending" class="search-link">
+        <div class="filter text-center">
+          <div><i class="fa-solid fa-fire"></i></div>
+          <p class="fs-6">Trending</p>
+        </div>
+      </a>
+      <a href="/search/Room" class="search-link">
+        <div class="filter text-center">
+          <div><i class="fa-solid fa-bed"></i></div>
+          <p class="fs-6">Rooms</p>
+        </div>
+      </a>
+      <a href="/search/Castle" class="search-link">
+        <div class="filter text-center">
+          <div><i class="fa-brands fa-fort-awesome"></i></div>
+          <p class="fs-6">Castles</p>
+        </div>
+      </a>
+      <a href="/search/Mountain-city" class="search-link">
+        <div class="filter text-center">
+          <div><i class="fa-solid fa-mountain-city"></i></div>
+          <p class="fs-6">Mountain-city</p>
+        </div>
+      </a>
+      <a href="/search/Amazing-pools" class="search-link">
+        <div class="filter text-center">
+          <div><i class="fa-solid fa-person-swimming"></i></div>
+          <p class="fs-6">Amazing-pools</p>
+        </div>
+      </a>
+      <a href="/search/Farms" class="search-link">
+        <div class="filter text-center">
+          <div><i class="fa-solid fa-wheat-awn"></i></div>
+          <p class="fs-6">Farms</p>
+        </div>
+      </a>
+      <a href="/search/Camping" class="search-link">
+        <div class="filter text-center">
+          <div><i class="fa-solid fa-campground"></i></div>
+          <p class="fs-6">Camping</p>
+        </div>
+      </a>
+      <a href="/search/Arctic" class="search-link">
+        <div class="filter text-center">
+          <div><i class="fa-regular fa-snowflake"></i></div>
+          <p class="fs-6">Arctic</p>
+        </div>
+      </a>
+    </div>
+    <div class="text-center my-auto border border-1 rounded-3 rounded-pill shadow p-3 bg-body rounded">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+        <label class="form-check-label" for="flexSwitchCheckChecked">Display Category</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
+    <% for( let list of lists ) { %>
+      <a href="/listing/<%= list._id %>" class="list-link">
         <div class="card col listing-card">
           <!-- <div class="card"> -->
-            <img src="<%= list.image.url%>" class=" img-fluid card-img-top" alt="Listing-Card_Image">
+          <img src="<%= list.image.url%>" class=" img-fluid card-img-top" alt="Listing-Card_Image">
           <div class="card-img-overlay"></div>
-            <div class="card-body">
-              <h5 class="card-title"><%= list.title %></h5>
-              <p class="card-text"> &#8377 <%= list.price.toLocaleString("en-IN") %>/night</p>
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h5 class="card-title">
+                <%= list.title %>
+              </h5>
+              <p class="card-text mt-2 p-2 rating-info shadow rounded">&#9827 <%= list.category %>
+              </p>
             </div>
-          
-        </div>
-    </a>
-        <% } %> 
-  </div>
-</body>
+            <p class="card-text"> &#8377 <%= list.price.toLocaleString("en-IN") %>/night</p>
+          </div>
 
+
+        </div>
+      </a>
+      <% } %>
+  </div>
+  <script>
+    const flexSwitchCheck = document.getElementById('flexSwitchCheckChecked');
+    const label = document.querySelector('label[for="flexSwitchCheckChecked"]');
+    flexSwitchCheck.addEventListener("click", function () {
+      if (flexSwitchCheck.checked) {
+        console.log("hide");
+        label.textContent = "Hide Category";
+      } else {
+        console.log("d");
+        label.textContent = "Display Category";
+      }
+      let ratingInfo = document.getElementsByClassName('rating-info');
+      for (let info of ratingInfo) {
+        info.style.display = flexSwitchCheck.checked ? 'inline' : 'none';
+      }
+    });
+  </script>

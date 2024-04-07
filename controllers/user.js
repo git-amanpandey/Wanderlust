@@ -10,7 +10,7 @@ module.exports.signup = async (req, res) => {
     let newUser = new User({ username, email });
     let registerUser = await User.register(newUser, password);
     req.flash("success", "Registration successful ! Welcome to Wanderlust");
-    console.log(registerUser);
+    console.log("New User Registered");
     req.login(registerUser, (err) => {
       if (err) {
         return next(err);
@@ -51,7 +51,7 @@ module.exports.logout = (req, res, next) => {
     if (err) {
       next(err);
     } else {
-      req.flash("success", "You are logged-out Successfully");
+      req.flash("success", "You are logged-out Successfully, Get back soon.");
       // console.log(req.user);----->User deleted from session
       res.redirect("/login");
     }

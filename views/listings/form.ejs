@@ -1,91 +1,121 @@
-<link rel="stylesheet" href="/css/style.css" />
 <% layout('/layouts/boilerplate.ejs') -%>
+<link rel="stylesheet" href="/css/style.css" />
 
-<div class="row mt-2">
-  <div class="col-8 offset-2">
-    <h2>Create New Listing</h2>
-    <form
-      class="needs-validation"
-      action="/listing/create"
-      method="post"
-      novalidate
-      enctype="multipart/form-data"
-    >
-      <div class="mb-3">
-        <label for="title" class="form-lable">Title</label><br />
-        <input
-          type="text"
-          class="form-control"
-          name="list[title]"
-          placeholder="Enter Eye-Catching Title"
-          required
-        />
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="mb-3">
-        <label for="description" class="form-lable">Description</label>
-        <textarea
-          name="list[description]"
-          class="form-control"
-          placeholder="Describe Properly"
-          required
-        ></textarea>
-        <div class="invalid-feedback">Description is required!</div>
-      </div>
-
-      <div class="mb-3">
-        <label for="image" class="form-lable"> Upload Listing-Image</label>
-        <input
-          type="file"
-          class="form-control"
-          name="list[image][url]"
-          required
-        />
-        <!-- <div class="invalid-feedback"></div> -->
-      </div>
-
-      <div class="row">
-        <div class="mb-3 col-md-4">
-          <label for="price" class="form-lable">Price</label>
-          <input
-            type="number"
-            class="form-control"
-            inputmode="numeric"
-            name="list[price]"
-            placeholder="1200"
-            required
-          />
-          <div class="invalid-feedback">Price should be valid!</div>
+  <div class="row mt-2">
+    <div class="col-8 offset-2">
+      <h2>Create New Listing</h2>
+      <form id="formSubmit" class="needs-validation" action="/listing/create" method="post" novalidate enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-lable">Title</label><br />
+          <input type="text" class="form-control" name="list[title]" placeholder="Enter Eye-Catching Title" required />
+          <div class="valid-feedback">Looks good!</div>
         </div>
-        <div class="mb-3 col-md-8">
-          <label for="Country" class="form-lable">Country</label>
-          <input
-            type="text"
-            class="form-control"
-            name="list[country]"
-            placeholder="India"
-            required
-          />
-          <div class="invalid-feedback">Country name is required!</div>
+        <div class="mb-3">
+          <label for="description" class="form-lable">Description</label>
+          <textarea name="list[description]" class="form-control" placeholder="Describe Properly" required></textarea>
+          <div class="invalid-feedback">Description is required!</div>
         </div>
-      </div>
 
-      <div class="mb-3">
-        <label for="location" class="form-lable">Location</label>
-        <input
-          type="text"
-          class="form-control"
-          name="list[location]"
-          placeholder="location"
-          required
-        />
-        <div class="invalid-feedback">Location is required!</div>
-      </div>
-      <!-- <form action="/listing/create" method="post"> -->
-      <div class="d-grid gap-2 d-block col-6 offset-3 mb-3">
-        <input type="submit" value="Submit" class="btn btn-danger" />
-      </div>
-      <!-- </form> -->
-    </form>
+        <div class="mb-3">
+          <label for="image" class="form-lable"> Upload Listing-Image</label>
+          <input type="file" class="form-control" name="list[image][url]" required />
+          <!-- <div class="invalid-feedback"></div> -->
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-lable">Price</label>
+            <input type="number" class="form-control" inputmode="numeric" name="list[price]" placeholder="1200"
+              required />
+            <div class="invalid-feedback">Price should be valid!</div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputState">Category</label>
+            <select id="inputState" class="form-control" name="list[category]" required>
+              <option selected>Trending</option>
+              <option>Room</option>
+              <option>Castle</option>
+              <option>Mountain-city</option>
+              <option>Amazing-pools</option>
+              <option>Farms</option>
+              <option>Camping</option>
+              <option>Arctic</option>
+            </select>
+            <div class="invalid-feedback">Select Category !</div>
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="Country" class="form-lable">Country</label>
+            <input type="text" class="form-control" name="list[country]" placeholder="India" required />
+            <div class="invalid-feedback">Country name is required!</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="location" class="form-lable">Location</label>
+          <input type="text" id="lClick" class="form-control" name="list[location]" placeholder="location" required />
+          <div class="invalid-feedback">Location is required!</div>
+        </div>
+        <!-- <form action="/listing/create" method="post"> -->
+        <div class="d-grid gap-2 d-block col-6 offset-3 mb-3">
+          <input id="btSubmit" type="submit" value="Submit" class="btn btn-success" />
+        </div>
+        <!-- </form> -->
+      </form>
+    </div>
   </div>
-</div>
+  <script>
+    const mapToken =  '<%- JSON.stringify(process.env.MAP_TOKEN) %>';
+    const token = JSON.parse(mapToken);
+
+   // console.log(token);
+   let locationInput = document.getElementById('lClick');
+    locationInput.addEventListener('click', () => {
+      console.log("clicked");
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                alert('Location access allowed');
+                let latitude = position.coords.latitude;
+                let longitude = position.coords.longitude;
+                // Perform reverse geocoding using Mapbox API
+                fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${token}`)
+                    .then(response => response.json())
+                    .then(data => {
+                      console.log(data);
+                        let locationName = data.features[0].place_name;
+                        locationInput.value = locationName;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        locationInput.value = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                    });
+            }, function(error) {
+                if (error.code === error.PERMISSION_DENIED) {
+                    alert('Location access denied');
+                    console.log("clicked-denied");
+                }
+            });
+        } else {
+            alert('Geolocation is not supported by this browser.');
+        }
+    });
+    //form-submit-event
+    document.getElementById('formSubmit').addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent default form submission
+      
+      let bt = document.getElementById('btSubmit');    
+      // Check if the form is valid according to Bootstrap's validation
+      if (event.target.checkValidity()) {
+        bt.setAttribute('value', 'Loading...');
+        bt.disabled = true;
+        // Example: Simulate form submission delay
+        setTimeout(() => {
+          // After some time, submit the form
+          event.target.submit();
+        }, 500); // Adjust the delay time as needed
+      } else {
+        // If the form is invalid, Bootstrap will handle displaying error messages.
+        // You can add custom logic here if needed.
+        console.log('Form is invalid');
+      }
+    });
+  </script>
